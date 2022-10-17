@@ -22,6 +22,7 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
+        'is_superuser'
     ];
 
     /**
@@ -50,5 +51,9 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function isSuperuser() {
+        return User::firstOrFail()->is_superuser;
     }
 }

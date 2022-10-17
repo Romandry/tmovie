@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\MovieController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Tymon\JWTAuth\Contracts\Providers\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,12 +25,21 @@ use Illuminate\Support\Facades\Route;
 Route::post('login', [ApiController::class, 'authenticate']);
 Route::post('register', [ApiController::class, 'register']);
 
+Route::get('movies', [MovieController::class, 'index']);
+Route::get('movie/{id_movie}', [MovieController::class, 'show']);
+
+Route::get('comments/{id_movie}', [CommentController::class, 'index']);
+
+
 Route::group(['middleware' => ['jwt.verify']], function() {
     Route::get('logout', [ApiController::class, 'logout']);
     Route::get('get_user', [ApiController::class, 'get_user']);
-    Route::get('products', [ProductController::class, 'index']);
-    Route::get('products/{id}', [ProductController::class, 'show']);
-    Route::post('create', [ProductController::class, 'store']);
-    Route::put('update/{product}',  [ProductController::class, 'update']);
-    Route::delete('delete/{product}',  [ProductController::class, 'destroy']);
+
+    Route::post('comment', [CommentController::class, 'create']);
+
+    Route::post('movie', [MovieController::class, 'create']);
+    Route::put('movie/{id_movie}',  [MovieController::class, 'update']);
+    Route::delete('movie/{id_movie}',  [MovieController::class, 'destroy']);
+
+
 });
