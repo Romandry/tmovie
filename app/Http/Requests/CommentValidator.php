@@ -10,6 +10,11 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 
 class CommentValidator extends FormRequest
 {
+
+    private $id_user;
+    private $id_movie;
+    private $text_comment;
+
     /**
      * Determine if the user is authorized to make this request.
      *

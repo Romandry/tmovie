@@ -10,6 +10,11 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 
 class MovieValidator extends FormRequest
 {
+
+    private $name_movie;
+    private $cover_url;
+    private $video;
+
     /**
      * Determine if the user is authorized to make this request.
      *

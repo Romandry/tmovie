@@ -24,7 +24,7 @@ class CommentController extends Controller
             ->paginate($this->limit);
         return response()->json([
             'data' => $data
-        ], 200);
+        ], Response::HTTP_OK);
     }
 
     /**
