@@ -5,11 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Movie;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Ramsey\Uuid\Type\Integer;
-use Tymon\JWTAuth\Facades\JWTAuth;
-use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
+use App\Http\Requests\MovieValidator;
 
 class MovieController extends Controller
 {
@@ -18,52 +15,37 @@ class MovieController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function index(): JsonResponse
     {
         $data = Movie::paginate($this->limit);
         return response()->json([
             'data' => $data
-        ], 200);
+        ], Response::HTTP_OK);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @param Request $request
+     * @param MovieValidator $request
      * @return JsonResponse
      */
-    public function create(Request $request): JsonResponse
+    public function create(MovieValidator $request): JsonResponse
     {
         // Only superUser can do it
         if(!User::isSuperuser()) {
             return response()->json([
                 'message' => 'You have not an access to this action'
-            ], 503);
+            ], Response::HTTP_SERVICE_UNAVAILABLE);
         }
 
-        //Validate data
-        $data = $request->only('name_movie', 'cover_url', 'video');
-        $validator = Validator::make($data, [
-            'name_movie' => 'required|string',
-            'cover_url' => 'required|string',
-            'video' => 'required|string'
-        ]);
-
-        //Send failed response if request is not valid
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->messages()], 200);
-        }
-
-        //Request is valid, create new movie
         $movie = Movie::create([
             'name_movie' => $request->name_movie,
             'cover_url' => $request->cover_url,
             'video' => $request->video
         ]);
 
-        //Movie created, return success response
         return response()->json([
             'success' => true,
             'message' => 'Movie created successfully',
@@ -72,23 +54,12 @@ class MovieController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Movie  $movie
+     * @param int $id
      * @return JsonResponse
      */
-    public function show(Movie $movie, int $id): JsonResponse
+    public function show(int $id): JsonResponse
     {
         if($this->user()){
             $data = Movie::findOrFail($id);
@@ -98,59 +69,33 @@ class MovieController extends Controller
 
         return response()->json([
             'data' => $data
-        ], 200);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Movie  $movie
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Movie $movie)
-    {
-        //
+        ], Response::HTTP_OK);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param MovieValidator $request
      * @param int $id_movie
      * @return JsonResponse
      */
-    public function update(Request $request, int $id_movie): JsonResponse
+    public function update(MovieValidator $request, int $id_movie): JsonResponse
     {
         // Only superUser can do it
         if(!User::isSuperuser()) {
             return response()->json([
                 'message' => 'You have not an access to this action'
-            ], 503);
+            ], Response::HTTP_SERVICE_UNAVAILABLE);
         }
 
         $movie = Movie::findOrFail($id_movie);
 
-        //Validate data
-        $data = $request->only('name_movie', 'cover_url', 'video');
-        $validator = Validator::make($data, [
-            'name_movie' => 'required|string',
-            'cover_url' => 'required|string',
-            'video' => 'required|string'
-        ]);
-
-        //Send failed response if request is not valid
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->messages()], 200);
-        }
-
-        //Request is valid, update movie
         $movie = $movie->update([
             'name_movie' => $request->name_movie,
             'cover_url' => $request->cover_url,
             'video' => $request->video
         ]);
 
-        //Movie updated, return success response
         return response()->json([
             'success' => true,
             'message' => 'Movie updated successfully',
@@ -170,7 +115,7 @@ class MovieController extends Controller
         if(!User::isSuperuser()) {
             return response()->json([
                 'message' => 'You have not an access to this action'
-            ], 503);
+            ], Response::HTTP_SERVICE_UNAVAILABLE);
         }
 
         $movie = Movie::findOrFail($id_movie);
