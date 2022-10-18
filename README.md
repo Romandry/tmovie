@@ -7,58 +7,140 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+## Транский Андрей
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Тестовое задания для кандидата на должность PHP Developer
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Задачи
+Реализовать API для сайта-кинотеатра со следующей функциональностью:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Анонимные и авторизованные пользователи могут видеть список фильмов на страницах сайта и читать комментарии.
+- ** DONE
 
-## Learning Laravel
+Анонимные могут зарегистрироваться с емайлом и паролем
+- ** DONE
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Авторизация работает через JWT
+- ** DONE
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Авторизованные пользователи могут смотреть фильмы и оставлять комменты к фильмам.
+- ** DONE
 
-## Laravel Sponsors
+Админы могут обновлять контент на сайте.
+- ** DONE
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+Сервис должен предоставлять HTTP API и принимать/отдавать запросы/ответы в формате JSON.
+API методы
+Регистрация пользователя
+Получение JWT токена по логину и паролю
+Получить список фильмов (доступно всем)
+Детальная информация о фильме (доступно всем)
+Получить список комментариев к фильму (доступно всем)
+Написать комментарий к фильму (доступно авторизованным)
+Создать, удалить и изменить фильм (доступно только админам)
+- ** DONE
 
-### Premium Partners
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+Требования к коду:
+Язык разработки: PHP
+Фреймворки и библиотеки можно использовать любые
+- ** Laravel
 
-## Contributing
+Реляционная СУБД: MySQL или PostgreSQL
+- ** MySQL
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Весь код должен быть выложен на Github с Readme файлом с инструкцией по запуску и примерами запросов/ответов (можно в Readme curl запросы указать)
+Таблицы должны накатываться миграциями. Некий набор начальных данных тоже должен накатываться миграцией.
+- ** Миграции плюс Сидеры
 
-## Code of Conduct
+Разработка интерфейса в браузере НЕ ТРЕБУЕТСЯ. Взаимодействие с АПИ предполагается через curl/Postman.
+- ** DONE
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Будем плюсом:
 
-## Security Vulnerabilities
+Использование docker и docker-compose для поднятия и развертывания dev-среды.
+- ** DONE
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Методы АПИ возвращают человеко-читабельные описания ошибок и соответствующие статус коды при их возникновении.
+- ** DONE
 
-## License
+Написаны unit/интеграционные тесты.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Настройки
+настройки находятся в файле .env
+порт проекта 7000
+
+
+## База данных
+запуск миграций:
+php artisan migrate
+
+запуск сидеров:
+php artisan db:seed
+
+## Работа с роутами API
+
+ [POST registration](http://localhost:7000/api/register). POST http://localhost:7000/api/register
+
+    JSON:
+    {
+        "name": "Andriy",
+        "email": "androy@foo.bar",
+        "password": "123456"
+    }
+---
+ [POST Login](http://localhost:7000/api/login). POST http://localhost:7000/api/login
+
+    JSON:
+    {
+        "email": "androy@foo.bar",
+        "password": "123456"
+    }
+
+- Токен в ответе "token": "eyJ0eXAiO....FGX0"
+---
+
+ [GET List of Movies](http://localhost:7000/api/movies). GET http://localhost:7000/api/movies
+
+---
+
+ [GET Get a Movie by ID](http://localhost:7000/api/movie/3). GET http://localhost:7000/api/movie/{id_movie}
+
+---
+
+ [GET Get Comments by MovieID](http://localhost:7000/api/comments/3). GET http://localhost:7000/api/comments/{id_movie}
+
+---
+ [POST Add Comment to the Movie](http://localhost:7000/api/comment). POST http://localhost:7000/api/comment
+
+    JSON:
+    {
+        "id_user": 1,
+        "id_movie": 4,
+        "text_comment": "Супер фильм!"
+    }
+
+
+---
+ [POST Add a Movie](http://localhost:7000/api/movie). POST http://localhost:7000/api/movie
+
+    JSON:
+    {
+        "name_movie": "3 Idiots",
+        "cover_url": "URL cover",
+        "video": "video.mp4"
+    }
+
+---
+ [PUT Edit the Movie](http://localhost:7000/api/movie/4). PUT http://localhost:7000/api/movie/{id_movie}
+
+    JSON:
+    {
+        "name_movie": "Mr. Nobody",
+        "cover_url": "URL cover new",
+        "video": "video_new.mp4"
+    }
+
+---
+ [DELETE Edit the Movie](http://localhost:7000/api/movie/4). DELETE http://localhost:7000/api/movie/{id_movie}
+
